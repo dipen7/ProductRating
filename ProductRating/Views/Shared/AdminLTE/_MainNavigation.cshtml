@@ -1,0 +1,25 @@
+﻿@using ProductRating.Helper
+@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json;
+
+@*@using static ProductRating.Helper.NavigationIndicatorHelper
+@{
+    UserSessionModel user = new UserSessionModel();
+    string username = "";
+    if(!string.IsNullOrEmpty(Context.Session.GetString("SessionUser"))){
+        user = JsonConvert.DeserializeObject<UserSessionModel>(Context.Session.GetString("SessionUser"));
+        username = user.Username;
+    }
+}*@
+
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="#" class="brand-link">
+        <span class="brand-text font-weight-light">Institute Management System</span>
+    </a>
+
+    <div class="sidebar">
+
+    </div>
+</aside>

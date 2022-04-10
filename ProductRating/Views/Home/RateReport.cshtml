@@ -1,0 +1,162 @@
+﻿
+@{
+    ViewData["Title"] = "Report";
+    ViewData["SubTitle"] = "Product Ratings";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <span id="alert-messsages"></span>
+                <table id="example2" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Ratings</th>
+                            <th>Remarks</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+</div>
+
+<!-- DataTables  & Plugins -->
+@section Scripts{
+    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/plugins/jszip/jszip.min.js"></script>
+    <script src="~/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="~/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="~/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <!-- Toastr -->
+    <script src="~/plugins/toastr/toastr.min.js"></script>
+    <script src="~/js/demo.js"></script>
+    <script>
+        $(function () {
+            $("#example2").DataTable({
+                "dom": '<"top"B<"top1"lf>>rt<"bottom"ip><"clear">',
+                "responsive": true, "autoWidth": false,
+                buttons: [
+                    {
+                        extend: 'excel',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4]
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4]
+                        }
+                    },
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4]
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        exportOptions: {
+                            columns: [0,1, 2]
+                        }
+                    }
+                ],
+                //"buttons": [ "csv", "excel", "pdf", "print"],
+                "serverSide": true,
+                "processing": true,
+                "filter": true,
+                "orderMulti": false,
+                "ajax": {
+                    "url": "/home/RateReportData",
+                    "type": "POST",
+                    "datatype": "json",
+                    "dataSrc": function (jsonData) {
+                        console.log(jsonData);
+                        console.log(jsonData.data);
+                        if (jsonData.data == null) {
+                            return [];
+                        }
+                        else {
+                            return jsonData.data;
+                        }
+                    }
+                },
+                "columns": [
+                    { "data": "productName", "name": "ProductName", "autoWidth": true },
+                    { "data": "ratings", "name": "Ratings", "autoWidth": true },
+                    { "data": "remarks", "name": "Remarks", "autoWidth": true }
+                ],
+                //"columnDefs": [{ "orderable": false, "targets": [5] }, { orderable: false, targets: 1 }],
+            }).buttons().container().appendTo('#example2_wrapper .float left ');
+        });
+    </script>
+}
+@section Styles{
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <style>
+        #example2 tbody tr td {
+            padding-top: 0px;
+            padding-bottom: 0px;
+        }
+
+            #example2 tbody tr td span a {
+                color: #21252991;
+            }
+
+        #example2_wrapper .top {
+            background-color: #e5e1e1;
+            background-image: linear-gradient(#e5e1e1, white);
+        }
+
+            #example2_wrapper .top .dt-buttons {
+                margin-left: 5px;
+                margin-right: 5px;
+            }
+
+            #example2_wrapper .top .top1 .dataTables_length {
+                float: left;
+            }
+
+            #example2_wrapper .top .top1 .dataTables_filter {
+                float: right;
+            }
+
+            #example2_wrapper .top .btn-group button {
+                padding-top: 0px;
+                padding-bottom: 0px;
+                font-size: small;
+                margin-bottom: 13px;
+                margin-top: 5px;
+            }
+
+        #example2_wrapper .bottom .dataTables_info {
+            float: left;
+        }
+
+        #example2_wrapper .bottom .dataTables_paginate {
+            float: right;
+        }
+
+        .content-header {
+            padding-top: 8px;
+            padding-bottom: 5px;
+        }
+    </style>
+}
+
+
